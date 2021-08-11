@@ -63,9 +63,6 @@ public class ChangeLevel : MonoBehaviour
 
     public void RestartGame()
     {
-        // метод DOTween DoFade применяется только для материала
-        // в связи с этим применен другой способ появления загрузочного экрана
-
         _blackBackground.SetActive(true);
         StartCoroutine(FadeOutBlack());
         _successValue = 0;
