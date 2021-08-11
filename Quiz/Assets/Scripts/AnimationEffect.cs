@@ -13,11 +13,20 @@ public class AnimationEffect : MonoBehaviour
     private GameObject _particleEffectGO;
     private Sequence _sequenceB;
     private Sequence _sequenceE;
-    private Transform _currentImageTransform;
+    private Vector3 _currentImageTransform;
+    private float _easyValue;
+    private bool _wrongAnswerAnimationInEffect;
 
     public void PlayWrongAnswerAnimation()
     {
-        PlayEaseInBounseEffect(_cellImageContent);
+        if (_wrongAnswerAnimationInEffect)
+        {
+            return;
+        }
+        else
+        {
+            PlayEaseInBounseEffect(_cellImageContent);
+        }
     }
 
     public void PlayRightAnswerAnimation()
@@ -43,22 +52,25 @@ public class AnimationEffect : MonoBehaviour
         _sequenceB.Append(currentImage.transform.DOScale(new Vector3(0.9f, 0.9f, 0.9f), 0.5f));
         _sequenceB.Append(currentImage.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
     }
-
+    
     private void PlayEaseInBounseEffect(GameObject currentImage)
     {
-        _currentImageTransform = currentImage.transform;
+        _wrongAnswerAnimationInEffect = true;
+        _easyValue = 0.7f;
+        _currentImageTransform = _cellImageContent.transform.position;
         _sequenceE = DOTween.Sequence();
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (1.2f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (1.09f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x, 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (0.8f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (0.9f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x, 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (1.2f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (1.09f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x, 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (0.8f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x * (0.9f), 0.05f, false));
-        _sequenceE.Append(currentImage.transform.DOMoveX(_currentImageTransform.position.x, 0.05f, false));
+        for (int i = 0; i < 3; i++)
+        {
+            _sequenceE.Append(currentImage.transform.DOMoveX((_currentImageTransform.x - _easyValue), 0.05f, false));
+            _sequenceE.Append(currentImage.transform.DOMoveX((_currentImageTransform.x + _easyValue), 0.05f, false));
+            _sequenceE.Append(currentImage.transform.DOMoveX((_currentImageTransform.x), 0.05f, false));
+            _easyValue -= 0.2f;
+        }
+        Invoke("StopWrongAnimation", 0.7f);
+    }
+
+    private void StopWrongAnimation()
+    {
+        _wrongAnswerAnimationInEffect = false;
     }
 }

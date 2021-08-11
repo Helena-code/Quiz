@@ -28,7 +28,6 @@ public class CellSpawner : MonoBehaviour
     private TaskUpdate _taskUpdate;
     private List<GameObject> _tasks;
 
-    // метод выбора случайного набора предметов для игры
     public void ChooseBundle()
     {
         int rand = Random.Range(0, _cellBundles.Count);
@@ -39,7 +38,6 @@ public class CellSpawner : MonoBehaviour
         SpawnCells();
     }
 
-    // метод очистки перед новой playmode
     public void CleaneAllCell()
     {
         for (int i = 0; i < _tasks.Count; i++)
@@ -66,7 +64,6 @@ public class CellSpawner : MonoBehaviour
         _cellPanelTransform = _cellPanel.transform;
         _taskUpdate = GetComponent<TaskUpdate>();
         _tasks = new List<GameObject>();
-        // словарь создан для того, чтобы каждый раз не использовать GetComponent для получения скрипта
         Cells = new Dictionary<GameObject, Cell>();
         _currentCells = new List<GameObject>();
     }
@@ -105,7 +102,6 @@ public class CellSpawner : MonoBehaviour
         }
     }
 
-    // метод получения настроек для ячейки
     private void GetCellSettins()
     {
         if (_cellSettings.Count != 0)
@@ -125,7 +121,6 @@ public class CellSpawner : MonoBehaviour
         }
     }
 
-    // метод установки целевого значения
     private void SetTaskValue()
     {
         int rand = Random.Range(0, _currentCells.Count);
